@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Articles from "./Articles"
 
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
@@ -11,8 +11,13 @@ const client = new ApolloClient({
 
 const App = () => (
   <ApolloProvider client={client}>
-    <div>
-      <h2>My first Apollo app</h2>
+    <div className="container">
+      <nav className="navbar navbar-dark bg-primary">
+        <a className="navbar-brand" href="#">Team Ace: Google Scholar Project</a>
+      </nav>
+      <div>
+        <Articles />
+      </div>
     </div>
   </ApolloProvider>
 );

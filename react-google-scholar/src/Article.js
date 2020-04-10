@@ -1,31 +1,9 @@
-import React from 'react';
-import { Query } from "react-apollo";
-import gql from "graphql-tag";const Courses = () => (
-  <Query
-    query={gql`
-      {
-        Articles{
-            article_id,
-            title, 
-            citedBy, 
-            citations, 
-            pub_year, 
-            eprint, 
-            pub_number, 
-            pub_publisher, 
-            pub_url, 
-            journal
-        }
-      }
-    `}
-  >
-    {({ loading, error, data }) => {
-      if (loading) return <p>Loading...</p>;
-      if (error) return <p>Error :(</p>;      return data.allCourses.map(({ id, title, author, description, topic, url }) => (
-        <div key={id}>
-          <p>{`${title} by ${author}`}</p>
+import React from 'react';const Article = (props) => (
+    <div className="card" style={{'width': '100%', 'marginTop': '10px'}}>
+        <div className="card-body">
+        <h5 className="card-title">{props.article.title}</h5>
+        <h6 className="card-subtitle mb-2 text-muted">by {props.article.citedBy}</h6>
+        <p className="card-text">{props.article.pub_publisher}</p>
         </div>
-      ));
-    }}
-  </Query>
-);export default Courses;
+    </div>
+);export default Article;
