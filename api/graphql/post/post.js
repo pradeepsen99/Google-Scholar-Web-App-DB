@@ -2,46 +2,59 @@ const graphql = require("graphql");
 const sqlite3 = require('sqlite3').verbose();
 
 //create a database if no exists
-const database = new sqlite3.Database("../micro-blog.db");
+const database = new sqlite3.Database("../cs411project");
 
-//create a table to insert post
 const createPostTable = () => {
     const  query  =  `
-        CREATE TABLE IF NOT EXISTS posts (
-        id integer PRIMARY KEY,
+        CREATE TABLE IF NOT EXISTS Article (
+        article_id integer PRIMARY KEY,
         title text,
-        description text,
-        createDate text,
-        author text )`;
+        citedBy text,
+        citations integer,
+        pub_year integer
+        eprint text,
+        pub_number integer,
+        pub_publisher text,
+        pub_url text,
+        journal text)`;
 
     return  database.run(query);
 }
 
-//call function to init the post table
-createPostTable();
+//init table - commented out for now
+//createPostTable();
+
+
 
 //creacte graphql post object
 const PostType = new graphql.GraphQLObjectType({
-    name: "Post",
+    name: "Article",
     fields: {
-        id: { type: graphql.GraphQLID },
+        article_id: { type: graphql.GraphQLID },
         title: { type: graphql.GraphQLString },
-        description: { type: graphql.GraphQLString },
-        createDate: { type: graphql.GraphQLString },
-        author: { type: graphql.GraphQLString }        
+        citedBy: { type: graphql.GraphQLString },
+        citations: { type: graphql.GraphQLID },
+        pub_year: { type: graphql.GraphQLID },
+        eprint: { type: graphql.GraphQLString },
+        pub_number: { type: graphql.GraphQLID },
+        pub_publisher: { type: graphql.GraphQLString },
+        pub_url: { type: graphql.GraphQLString },
+        journal: { type: graphql.GraphQLString }   
     }
 });
+
+
 // create a graphql query to select all and by id
 var queryType = new graphql.GraphQLObjectType({
     name: 'Query',
     fields: {
         //first query to select all
-        Posts: {
+        Articles: {
             type: graphql.GraphQLList(PostType),
             resolve: (root, args, context, info) => {
                 return new Promise((resolve, reject) => {
                     // raw SQLite query to select from table
-                    database.all("SELECT * FROM Posts;", function(err, rows) {  
+                    database.all("SELECT * FROM Article;", function(err, rows) {  
                         if(err){
                             reject([]);
                         }
@@ -51,17 +64,17 @@ var queryType = new graphql.GraphQLObjectType({
             }
         },
         //second query to select by id
-        Post:{
+        Article:{
             type: PostType,
             args:{
-                id:{
+                article_id:{
                     type: new graphql.GraphQLNonNull(graphql.GraphQLID)
                 }               
             },
-            resolve: (root, {id}, context, info) => {
+            resolve: (root, {article_id}, context, info) => {
                 return new Promise((resolve, reject) => {
                 
-                    database.all("SELECT * FROM Posts WHERE id = (?);",[id], function(err, rows) {                           
+                    database.all("SELECT * FROM Article WHERE article_id = (?);",[article_id], function(err, rows) {                           
                         if(err){
                             reject(null);
                         }
@@ -72,6 +85,7 @@ var queryType = new graphql.GraphQLObjectType({
         }
     }
 });
+/*
 //mutation type is a type of object to modify data (INSERT,DELETE,UPDATE)
 var mutationType = new graphql.GraphQLObjectType({
     name: 'Mutation',
@@ -172,12 +186,12 @@ var mutationType = new graphql.GraphQLObjectType({
         }
       }
     }
-});
+});*/
 
 //define schema with post object, queries, and mustation 
 const schema = new graphql.GraphQLSchema({
     query: queryType,
-    mutation: mutationType 
+    //mutation: mutationType 
 });
 
 //export schema to use on index.js
