@@ -17,6 +17,20 @@ brew install sqlite3
 
 ### Installing
 
+Go to the api directory and install the dependencies
+```
+cd api
+npm intall
+```
+
+Go to the react-google-scholar directory and install the dependencies 
+```
+cd react-google-scholar
+npm install
+```
+
+## Running Project
+
 Go to the api directory and run the graphql server
 ```
 cd api
