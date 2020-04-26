@@ -33,9 +33,9 @@ After doing this http://localhost:3000/ will open up in the default browser and 
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [React.js](https://reactjs.org/) - The web framework used
+* [Graphql](https://graphql.org/) - Backend 
+* [Apollo](https://www.apollographql.com/) - Used to connect the graphql server with react
 
 ## License
 
