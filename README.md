@@ -51,6 +51,21 @@ After doing this http://localhost:3000/ will open up in the default browser and 
 * [Graphql](https://graphql.org/) - Backend 
 * [Apollo](https://www.apollographql.com/) - Used to connect the graphql server with react
 
+## Resources Used
+
+### Apollo and Graphql
+1) https://www.apollographql.com/docs/react/data/queries/
+2) https://www.apollographql.com/docs/tutorial/queries/
+3) https://www.apollographql.com/blog/full-stack-react-graphql-tutorial-582ac8d24e3b
+4) https://www.sitepoint.com/how-to-build-a-web-app-with-graphql-and-react/
+
+### CORS
+1) https://www.prisma.io/blog/enabling-cors-for-express-graphql-apollo-server-1ef999bfb38d
+
+### React and Grapql
+1) https://medium.com/codingthesmartway-com-blog/getting-started-with-react-and-graphql-395311c1e8da
+2) https://blog.logrocket.com/crud-with-node-graphql-react/
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
