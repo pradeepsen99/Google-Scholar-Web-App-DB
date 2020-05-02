@@ -51,7 +51,7 @@ class updateArticle extends Component{
                     return (
                         <Mutation mutation={UPDATE_ARTICLE_QUERY} 
                         key={article_id}
-                        //onCompleted={() => window.location.replace("./create")}
+                        onCompleted={() => window.location.reload()}
                         //onCompleted={() => this.props.history.push('/')}
                         >
                         {(updateArticle, {loading, error}) =>(

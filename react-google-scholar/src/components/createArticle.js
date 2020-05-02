@@ -43,7 +43,7 @@ class createArticle extends Component{
           
           onCompleted={() => window.location.reload()}
         >
-        {(createArticle, {data, loading, error}) => (
+        {(createArticle, {loading, error}) => (
           <div className="container">
             <div className="panel panel-default">
               <div className="panel-heading">
@@ -64,7 +64,6 @@ class createArticle extends Component{
                         journal: journal.value
                       };
                       console.log(input);
-                      console.log(data);
                       e.preventDefault();
                       createArticle({variables: {title: title.value,
                         citedBy: citedBy.value,
