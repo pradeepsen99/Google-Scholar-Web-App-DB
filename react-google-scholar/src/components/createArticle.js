@@ -50,8 +50,7 @@ class createArticle extends Component{
         <Mutation
           mutation={CREATE_ARTICLE_QUERY}
           key = {{title, citedBy, citations, pub_year, eprint, pub_number, pub_publisher, pub_url, journal}}
-          
-          onCompleted={() => window.location.reload()}
+          onCompleted={() => window.location.replace('../')}
         >
         {(createArticle, {loading, error}) => (
           <div className="container">
