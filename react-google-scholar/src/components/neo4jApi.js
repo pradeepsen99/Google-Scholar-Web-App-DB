@@ -8,13 +8,13 @@ function getArticles(article_id) {
     var session = driver.session();
     return session
       .run(
-        // "MATCH (article1:Article)<-[:AUTHORED]-(author:Author)-[:AUTHORED]->(article:Article) \
-        // WHERE article.title = '$article_id' \
-        // RETURN article1.title AS title", {article_id}
+        "MATCH (article1:Article)<-[:AUTHORED]-(author:Author)-[:AUTHORED]->(article:Article) \
+        WHERE article.article_id = $article_id \
+        RETURN article1.title AS name", {article_id}
         // "MATCH (author:Author) \ 
         // RETURN author.author_name AS name \
         // LIMIT 10"
-        "MATCH (author:Author) RETURN author.author_name AS name LIMIT 10"
+        //"MATCH (article:Article) RETURN article.title AS name LIMIT 10"
         )
       .then(result => {
         session.close();

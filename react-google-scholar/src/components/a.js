@@ -4,8 +4,25 @@ import {Query} from 'react-apollo';
 import {Link} from 'react-router-dom';
 import classNames from 'classnames';
 import * as d3 from "d3";
+import $ from "jquery";
 
-//var neo4japi = require('./neo4jApi');
+var neo4japi = require('./neo4jApi');
+
+function showArticles(article_id) {
+  neo4japi
+    .getArticles(article_id)
+    .then(article_list => {
+      if (!article_list) return;
+
+      var $list = $("#articleList").empty();
+      article_list.forEach(addToList);
+
+      function addToList(item, index) {
+        $list.append($('<li>' + item + "</li>"));
+      }
+    }, "json");
+}
+
 
 /*
 function renderGraph(article_id) {
@@ -82,6 +99,7 @@ const ARTICLE_QUERY = gql`
 export class article extends Component {
     render(){
         let {article_id} = this.props.match.params;
+        showArticles(article_id);
         //console.log(neo4japi.getArticles(article_id));
         //let {relatedArticles} = neo4japi.getArticles(article_id);
         //console.log(relatedArticles);
@@ -99,8 +117,6 @@ export class article extends Component {
                                 <span className="text-dark">Google Scholar:</span>
                                     {title}
                             </h1>
-                            <div id="graph">
-                            </div>
                             <h4 className="mb-3">Scholar Details</h4>
                                 <ul className="list-group">
                                     <li className="list-group-item">
@@ -143,9 +159,9 @@ export class article extends Component {
                                     <li className="list-group-item">
                                         Journal : {journal}
                                     </li>
-                                    <li className="list-group-item">
-                                        
-                                    </li>
+                                </ul>
+                            <h4 className="mb-3">Related Articles</h4>
+                                <ul className="list-group" id="articleList">
                                 </ul>
                                 <hr />
                                 <Link to={`/update/${article_id}`} className="btn btn-primary">
