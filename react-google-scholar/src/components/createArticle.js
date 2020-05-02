@@ -16,7 +16,17 @@ const CREATE_ARTICLE_QUERY = gql`
             pub_url: $pub_url, 
             journal: $journal
         )
-        
+        {
+          title, 
+          citedBy, 
+          citations, 
+          pub_year, 
+          eprint, 
+          pub_number, 
+          pub_publisher, 
+          pub_url, 
+          journal
+        }
     }
 `;
 
@@ -25,15 +35,15 @@ class createArticle extends Component{
     render(){
       let title, citedBy, citations, pub_year, eprint, pub_number, pub_publisher, pub_url, journal;
       let input = {
-        title: '',
-        citedBy: '',
-        citations: '',
-        pub_year: '',
-        eprint: '',
-        pub_number: '',
-        pub_publisher: '',
-        pub_url: '',
-        journal: ''
+        title: "",
+        citedBy: "",
+        citations: "",
+        pub_year: "",
+        eprint: "",
+        pub_number: "",
+        pub_publisher: "",
+        pub_url: "",
+        journal: ""
       }
       console.log(input);
       return(

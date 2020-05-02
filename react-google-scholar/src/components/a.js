@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 import classNames from 'classnames';
 import * as d3 from "d3";
 import $ from "jquery";
-
+/*
 var neo4japi = require('./neo4jApi');
 
 function showArticles(article_id) {
@@ -22,7 +22,7 @@ function showArticles(article_id) {
       }
     }, "json");
 }
-
+*/
 
 /*
 function renderGraph(article_id) {
@@ -99,7 +99,7 @@ const ARTICLE_QUERY = gql`
 export class article extends Component {
     render(){
         let {article_id} = this.props.match.params;
-        showArticles(article_id);
+        //showArticles(article_id);
         //console.log(neo4japi.getArticles(article_id));
         //let {relatedArticles} = neo4japi.getArticles(article_id);
         //console.log(relatedArticles);
