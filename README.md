@@ -69,4 +69,3 @@ After doing this http://localhost:3000/ will open up in the default browser and 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-

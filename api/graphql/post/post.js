@@ -2,7 +2,7 @@ const graphql = require("graphql");
 const sqlite3 = require('sqlite3').verbose();
 
 //create a database if no exists
-const database = new sqlite3.Database("../cs411project.db");
+const database = new sqlite3.Database("../cs411project_v2.db");
 
 const createPostTable = () => {
     const  query  =  `
