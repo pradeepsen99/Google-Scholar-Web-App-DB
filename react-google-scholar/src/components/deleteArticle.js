@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import gql from 'graphql-tag';
 import { Mutation} from 'react-apollo';
 
+var neo4japi = require('./neo4jApi');
+
 const DELETE_ARTICLE_QUERY = gql`
     mutation deleteArticle($article_id: ID!){
         deleteArticle(
@@ -18,6 +20,7 @@ class deleteArticle extends Component{
     }
     render(){
         let {article_id} = this.props.match.params;
+        //neo4japi.neo4jDeleteArticle(article_id);
         return(
             <div className="edit-btn-container">
                 <Mutation 
