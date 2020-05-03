@@ -43,6 +43,14 @@ const PostType = new graphql.GraphQLObjectType({
     }
 });
 
+const PostType_pub = new graphql.GraphQLObjectType({
+    name: "Pub",
+    fields: {
+        author_id: { type: graphql.GraphQLID },
+        author_name: { type: graphql.GraphQLString },
+        num_pubs: { type: graphql.GraphQLID }
+    }
+});
 
 /* 
 query{
@@ -59,6 +67,15 @@ query{
     pub_url, 
     journal
   }
+}
+
+query{
+    authorPub
+    {
+        author_id,
+        author_name,
+        num_pubs
+    }
 }
 */
 
@@ -97,6 +114,31 @@ var queryType = new graphql.GraphQLObjectType({
                             reject(null);
                         }
                         resolve(rows[0]);
+                    });
+                });
+            }
+        },
+        /* 
+        sqlite> SELECT Author.author_id, Author.author_name, COUNT(article_id) as num_pubs
+            FROM Author
+            INNER JOIN Authored
+            ON Author.author_id = Authored.author_id
+            WHERE Author.cited_by > 100
+            GROUP BY Author.author_id
+            HAVING COUNT(article_id) > 5
+            ORDER BY num_pubs DESC;
+        */
+        //Complex Query
+        authorPub:{
+            type: graphql.GraphQLList(PostType_pub),
+            resolve: (root, args, context, info) => {
+                return new Promise((resolve, reject) => {
+                    // raw SQLite query to select from table
+                    database.all("SELECT Author.author_id, Author.author_name, COUNT(article_id) as num_pubs FROM Author INNER JOIN Authored ON Author.author_id = Authored.author_id WHERE Author.cited_by > 100 GROUP BY Author.author_id HAVING COUNT(article_id) > 5 ORDER BY num_pubs DESC;", function(err, rows) {  
+                        if(err){
+                            reject([]);
+                        }
+                        resolve(rows);
                     });
                 });
             }
@@ -261,6 +303,7 @@ var mutationType = new graphql.GraphQLObjectType({
             })
         }
       },
+
       //mutation for delete
       deleteArticle: {
          //type of object resturn after delete in SQLite
@@ -281,7 +324,9 @@ var mutationType = new graphql.GraphQLObjectType({
                 });
             })
         }
-      }
+      },
+
+
     }
 });
 
