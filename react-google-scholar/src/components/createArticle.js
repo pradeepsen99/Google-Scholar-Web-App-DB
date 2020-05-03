@@ -3,6 +3,8 @@ import gql from 'graphql-tag';
 import { Mutation} from 'react-apollo';
 import { Link, withRouter } from 'react-router-dom';
 
+var neo4japi = require('./neo4jApi');
+
 const CREATE_ARTICLE_QUERY = gql`
     mutation createArticle($title: String!, $citedBy: String!, $citations: ID!, $pub_year: ID!, $eprint: String!, $pub_number: ID!, $pub_publisher: String!, $pub_url: String!, $journal: String! ){
         createArticle(
@@ -31,6 +33,12 @@ const CREATE_ARTICLE_QUERY = gql`
 `;
 
 class createArticle extends Component{
+
+    neo4jCreateArticle_ = (title, pub_year, cited_by) => {
+      var temp = neo4japi.neo4jtestcreate();
+      console.log('finished!');
+      console.log(temp);
+    }
 
     render(){
       let title, citedBy, citations, pub_year, eprint, pub_number, pub_publisher, pub_url, journal;
@@ -158,7 +166,7 @@ class createArticle extends Component{
                             defaultValue={''}
                             />
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button type="submit" className="btn btn-primary" onClick={() => this.neo4jCreateArticle_(title.value, pub_year.value, citedBy.value)}>Submit</button>
                     </form>
                     {loading&&<p>Loading...</p>}
                     {error&&<p>Error:( Please try again</p>}

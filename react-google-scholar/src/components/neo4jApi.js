@@ -3,22 +3,56 @@ var _ = require('lodash');
 var neo4j = require('neo4j-driver').v1;
 var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', 'cs411'));
 
-// TODO: test
-function neo4jCreateArticle(title, pub_year, cited_by){
-  console.log('creating article node in Neo4j');
+
+async function neo4jtestcreate(){
+  console.log('running neo4jtestcreate()');
   var session = driver.session();
-  return session
-    .run(
-      "CREATE (article:Article {title: $title, pub_year: $pub_year, cited_by: $cited_by })", {title, pub_year, cited_by}
-    )
-    .then(result => {
-      session.close();
-    })
-    .catch(error => {
-      session.close();
-      throw error;
-    });
+  try {
+  const result = await session.run(
+    "CREATE (article:Article {title: 'test1', pub_year: 0, cited_by: 0 })"
+  );
+  session.close();
+  console.log('query successful');
+  if (_.isEmpty(result.records)) {
+    console.log('result is empty for some reason');
+    return 'temp';
+  }
+  var names = [];
+  result.records.forEach(res => {
+    names.push(res.get('name'));
+  });
+  console.log(names);
+  return names;
 }
+catch (error) {
+  console.log('error here');
+  session.close();
+  throw error;
+}
+} 
+
+// TODO: test
+async function neo4jCreateArticle(title, pub_year, cited_by){
+  console.log("creating new article node");
+  console.log(title);
+  console.log(pub_year);
+  console.log(cited_by);
+  var session = driver.session();
+  try {
+    const result = await session.run(
+      "CREATE (article:Article {title: '$title', pub_year: $pub_year, cited_by: $cited_by })", {title, pub_year, cited_by}
+    );
+    session.close();
+    console.log('successfully created article node');
+    return; 
+  }
+  catch (error) {
+    console.log('error in creating article node');
+    session.close();
+    throw error;
+  }
+}
+
 
 // TODO: test
 function neo4jCreateAuthor(author_name, cited_by){
@@ -26,7 +60,7 @@ function neo4jCreateAuthor(author_name, cited_by){
   var session = driver.session();
   return session
     .run(
-      "CREATE (author:Author {author_name: $author_name, cited_by: $cited_by })", {author_name, cited_by}
+      "CREATE (author:Author {author_name: '$author_name', cited_by: $cited_by })", {author_name, cited_by}
     )
     .then(result => {
       session.close();
@@ -45,7 +79,7 @@ function neo4jUpdateArticle(article_id, title, pub_year, cited_by){
     .run(
       "MATCH (article:Article) \
       WHERE article.article_id = $article_id \
-      SET article = {title: $title, pub_year: $pub_year, cited_by: $cited_by } \
+      SET article = {title: '$title', pub_year: $pub_year, cited_by: $cited_by } \
       RETURN article.article_id, article.title, article.pub_year, article.cited_by", {article_id, title, pub_year, cited_by}
     )
     .then(result => {
@@ -65,7 +99,7 @@ function neo4jUpdateAuthor(author_id, author_name, cited_by){
     .run(
       "MATCH (author:Author) \
       WHERE author.author_id = $author_id \
-      SET author = {author_name: $author_name, cited_by: $cited_by } \
+      SET author = {author_name: '$author_name', cited_by: $cited_by } \
       RETURN author.author_id, author.author_name, author.cited_by", {author_id, author_name, cited_by}
     )
     .then(result => {
@@ -116,38 +150,32 @@ function neo4jDeleteAuthor(author_id){
 }
 
 
-function getArticles(article_id) {
+async function getArticles(article_id) {
     console.log('running getArticles()');
     var session = driver.session();
-    return session
-      .run(
-        "MATCH (article1:Article)<-[:AUTHORED]-(author:Author)-[:AUTHORED]->(article:Article) \
+    try {
+    const result = await session.run(
+      "MATCH (article1:Article)<-[:AUTHORED]-(author:Author)-[:AUTHORED]->(article:Article) \
         WHERE article.article_id = $article_id \
-        RETURN article1.title AS name", {article_id}
-        // "MATCH (author:Author) \ 
-        // RETURN author.author_name AS name \
-        // LIMIT 10"
-        //"MATCH (article:Article) RETURN article.title AS name LIMIT 10"
-        )
-      .then(result => {
-        session.close();
-  
-        if (_.isEmpty(result.records)){
-          console.log('result is empty for some reason');
-          return null;
-        }
-  
-        var names = [];
-        result.records.forEach(res => {
-            names.push(res.get('name'));
-        })
-        console.log(names);
-        return names;
-      })
-      .catch(error => {
-        session.close();
-        throw error;
-      });
+        RETURN article1.title AS name", { article_id }
+    );
+    session.close();
+    if (_.isEmpty(result.records)) {
+      console.log('result is empty for some reason');
+      return null;
+    }
+    console.log('query successful');
+    var names = [];
+    result.records.forEach(res => {
+      names.push(res.get('name'));
+    });
+    console.log(names);
+    return names;
+  }
+  catch (error) {
+    session.close();
+    throw error;
+  }
 }
 
 
@@ -183,6 +211,7 @@ function getGraph(article_id) {
     );
 }
 
+exports.neo4jtestcreate = neo4jtestcreate;
 exports.neo4jCreateArticle = neo4jCreateArticle;
 exports.neo4jCreateAuthor = neo4jCreateAuthor;
 exports.neo4jUpdateArticle = neo4jUpdateArticle;
