@@ -9,6 +9,7 @@ import article from './components/a';
 import createArticle from './components/createArticle';
 import deleteArticle from './components/deleteArticle';
 import updateArticle from './components/updateArticle';
+import Trends from './components/Trends';
 
 const client = new ApolloClient({
   introspection: true,
@@ -34,6 +35,9 @@ const App = () => (
       <li class="nav-item active">
         <a class="nav-link" href="/create">Create</a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/trends">Trends</a>
+      </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
@@ -45,8 +49,10 @@ const App = () => (
         <Route exact path="/" component={Articles} />
         <Route exact path="/article/:article_id" component={article} />
         <Route exact path="/create" component={createArticle} />
+        <Route exact path="/trends" component={Trends} />
         <Route exact path="/delete/:article_id" component={deleteArticle} />
         <Route exact path="/update/:article_id" component={updateArticle} />
+        
     </div>
     </Router>
   </ApolloProvider>

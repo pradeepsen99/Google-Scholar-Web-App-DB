@@ -24,6 +24,28 @@ const createPostTable = () => {
 //init table - commented out for now
 createPostTable();
 
+const createInterestsView = () => {
+    const query = `
+        CREATE VIEW IF NOT EXISTS interests_pubs_per_year
+        AS
+        SELECT interest, pub_year, COUNT(article_id) AS num_pubs, RANK() OVER ( 
+                                                                         PARTITION BY pub_year 
+                                                                         ORDER BY COUNT(article_id) DESC 
+                                                                  ) rank 
+        FROM ( 
+            SELECT DISTINCT article_id, pub_year, interest 
+            FROM Authored 
+            NATURAL JOIN Article 
+            NATURAL JOIN InterestedIn 
+            WHERE interest != '') a 
+        GROUP BY interest, pub_year 
+        ORDER BY pub_year DESC, num_pubs DESC`;
+
+    return database.run(query);
+    
+}
+
+createInterestsView();
 
 
 //creacte graphql post object
@@ -42,6 +64,16 @@ const PostType = new graphql.GraphQLObjectType({
         journal: { type: graphql.GraphQLString }   
     }
 });
+
+//create graphql object
+const PostType1 = new graphql.GraphQLObjectType({
+    name: "Results",
+    fields: {
+        interest: { type: graphql.GraphQLString },
+        pub_year: { type: graphql.GraphQLInt },
+        num_pubs: { type: graphql.GraphQLInt }
+    }
+})
 
 
 /* 
@@ -97,6 +129,27 @@ var queryType = new graphql.GraphQLObjectType({
                             reject(null);
                         }
                         resolve(rows[0]);
+                    });
+                });
+            }
+        },
+        // Query top 10 research interests by year
+        FindTopInterests: {
+            type: graphql.GraphQLList(PostType1),
+            resolve: (root, args, context, info) => {
+                return new Promise((resolve, reject) => {
+                    database.all("SELECT interest, pub_year, num_pubs \
+                                  FROM interests_pubs_per_year \
+                                  WHERE interest IN \
+                                      (SELECT interest \
+                                       FROM interests_pubs_per_year \
+                                       WHERE pub_year == 2015 AND rank <= 10 \
+                                      ) \
+                                  AND pub_year BETWEEN 2005 AND 2015;", function(err, rows) {
+                        if(err){
+                            reject([]);
+                        }
+                        resolve(rows);
                     });
                 });
             }
