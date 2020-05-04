@@ -24,7 +24,7 @@ function showArticles(article_id) {
 }
 
 
-/*
+
 function renderGraph(article_id) {
     var width = 200, height = 200;
     var force = d3.layout.force()
@@ -78,7 +78,7 @@ function renderGraph(article_id) {
         });
       });
   }
-*/
+
 
 const ARTICLE_QUERY = gql`
   query ArticleQuery($article_id: ID!){

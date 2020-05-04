@@ -130,6 +130,31 @@ var queryType = new graphql.GraphQLObjectType({
                 });
             }
         },
+
+
+        Paging: {
+            type: graphql.GraphQLList(PostType),
+            args:{
+                offset:{
+                    type: new graphql.GraphQLNonNull(graphql.GraphQLID)
+                },
+                limit:{
+                    type: new graphql.GraphQLNonNull(graphql.GraphQLID)
+                }              
+            },
+            resolve: (root, {offset, limit}, context, info) => {
+                return new Promise((resolve, reject) => {
+                    // raw SQLite query to select from table
+                    database.all("SELECT * FROM Article LIMIT (?), (?);", [offset, limit], function(err, rows) {  
+                        if(err){
+                            reject([]);
+                        }
+                        resolve(rows);
+                    });
+                });
+            }
+        },
+
         //second query to select by id
         Article:{
             type: PostType,
