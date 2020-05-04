@@ -1,29 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import gql from 'graphql-tag';
 import { Query } from "react-apollo";
-import ArticleItem from "./ArticleItem";
-import Article from './Article';
-import Key from './Key';
+import ArticleItem from "../components/ArticleItem";
+import Key from '../components/Key';
 
-// const ARTICLES_QUERY = gql`
-//   query ArticlesQuery{
-//     Articles {
-//       article_id,
-//       title, 
-//       citedBy, 
-//       citations, 
-//       pub_year, 
-//       eprint, 
-//       pub_number, 
-//       pub_publisher, 
-//       pub_url, 
-//       journal
-//     }
-//   }  
-// `;
 const PAGINATION_ARTICLES_QUERY = gql`
   query ArticleQuery{
-    Paging (offset:0, limit:1000){
+    Paging (offset:2000, limit:1000){
       article_id,
       title,
       citedBy,
@@ -37,7 +20,7 @@ const PAGINATION_ARTICLES_QUERY = gql`
     }
   }
 `;
-export class Articles extends Component{
+export class Articles3 extends Component{
   render(){
     return(
       <Fragment>
@@ -63,4 +46,4 @@ export class Articles extends Component{
   }
 }
 
-export default Articles;
+export default Articles3;

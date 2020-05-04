@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-export default function ArticleItem({Articles:{article_id,
+export default function ArticleItem({Paging:{article_id,
     title, 
     citedBy, 
     citations, 
