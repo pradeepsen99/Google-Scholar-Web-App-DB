@@ -218,16 +218,21 @@ var queryType = new graphql.GraphQLObjectType({
         // Query top 10 research interests by year
         FindTopInterests: {
             type: graphql.GraphQLList(PostType1),
-            resolve: (root, args, context, info) => {
+            args:{
+                year:{
+                    type: new graphql.GraphQLNonNull(graphql.GraphQLInt)
+                }               
+            },
+            resolve: (root, {year}, context, info) => {
                 return new Promise((resolve, reject) => {
                     database.all("SELECT interest, pub_year, num_pubs \
                                   FROM interests_pubs_per_year \
                                   WHERE interest IN \
                                       (SELECT interest \
                                        FROM interests_pubs_per_year \
-                                       WHERE pub_year == 2015 AND rank <= 10 \
+                                       WHERE pub_year = (?) AND rank <= 10 \
                                       ) \
-                                  AND pub_year BETWEEN 2005 AND 2015;", function(err, rows) {
+                                  AND pub_year BETWEEN (?) AND (?);", [year, year-10, year], function(err, rows) {
                         if(err){
                             reject([]);
                         }
