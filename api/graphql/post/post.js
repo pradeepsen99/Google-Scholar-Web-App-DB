@@ -176,6 +176,24 @@ var queryType = new graphql.GraphQLObjectType({
             }
         },
 
+        /*
+        //Sample query
+        query{
+            searchArticle(search_query: "Parallel")
+            {
+                article_id,
+                title, 
+                citedBy, 
+                citations, 
+                pub_year, 
+                eprint, 
+                pub_number, 
+                pub_publisher, 
+                pub_url, 
+                journal
+            }
+            }
+        */
         //second query to select by id
         searchArticle:{
             type: graphql.GraphQLList(PostType),
