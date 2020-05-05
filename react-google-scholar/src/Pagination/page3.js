@@ -41,6 +41,21 @@ export class Articles3 extends Component{
         }
       }
       </Query>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="/">1</a></li>
+          <li class="page-item"><a class="page-link" href="/page2">2</a></li>
+          <li class="page-item"><a class="page-link" href="/page3">3</a></li>
+          <li class="page-item"><a class="page-link" href="/page4">4</a></li>
+          <li class="page-item"><a class="page-link" href="/page5">5</a></li>
+          <li class="page-item"><a class="page-link" href="/page6">6</a></li>
+          <li class="page-item"><a class="page-link" href="/page7">7</a></li>
+          <li class="page-item"><a class="page-link" href="/page8">8</a></li>
+          <li class="page-item"><a class="page-link" href="/page9">9</a></li>
+          <li class="page-item"><a class="page-link" href="/page10">10</a></li>
+          <li class="page-item"><a class="page-link" href="/page11">11</a></li>
+        </ul>
+      </nav>
       </Fragment>
     );
   }

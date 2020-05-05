@@ -1,10 +1,9 @@
 import React from 'react';
 import './App.css';
 import Articles from "./components/Articles"
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
-import Article from './components/Article';
 import article from './components/a';
 import createArticle from './components/createArticle';
 import deleteArticle from './components/deleteArticle';
@@ -57,7 +56,7 @@ const App = () => (
     </nav>
 
    
-
+      <Switch>
         <Route exact path="/" component={Articles} />
         <Route exact path="/article/:article_id" component={article} />
         <Route exact path="/create" component={createArticle} />
@@ -74,21 +73,8 @@ const App = () => (
         <Route exact path="/page9" component={Articles9} />
         <Route exact path="/page10" component={Articles10} />
         <Route exact path="/page11" component={Articles11} />
-        <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li class="page-item"><a class="page-link" href="/">1</a></li>
-          <li class="page-item"><a class="page-link" href="/page2">2</a></li>
-          <li class="page-item"><a class="page-link" href="/page3">3</a></li>
-          <li class="page-item"><a class="page-link" href="/page4">4</a></li>
-          <li class="page-item"><a class="page-link" href="/page5">5</a></li>
-          <li class="page-item"><a class="page-link" href="/page6">6</a></li>
-          <li class="page-item"><a class="page-link" href="/page7">7</a></li>
-          <li class="page-item"><a class="page-link" href="/page8">8</a></li>
-          <li class="page-item"><a class="page-link" href="/page9">9</a></li>
-          <li class="page-item"><a class="page-link" href="/page10">10</a></li>
-          <li class="page-item"><a class="page-link" href="/page11">11</a></li>
-        </ul>
-      </nav>
+        </Switch>
+        
     </div>
     </Router>
   </ApolloProvider>
