@@ -25,16 +25,8 @@
     "react-moment": "^0.9.7",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-<<<<<<< HEAD
-    "sqlite3": "^4.1.1"
-=======
-    "reactstrap": "8.4.1",
     "sqlite3": "^4.1.1",
-    "lodash": "^4.15.0",
-    "neo4j-driver": "^1.0.4",
-    "d3": "^3.0.0",
-    "jquery": "^3.2.1"
->>>>>>> ea91c67a24f83e767e82e58e9b1a9e7325771179
+    "reactstrap": "8.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
