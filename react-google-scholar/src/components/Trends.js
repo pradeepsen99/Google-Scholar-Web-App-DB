@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import gql from 'graphql-tag';
 import {Query} from 'react-apollo';
 import {Link} from 'react-router-dom';
@@ -11,8 +12,8 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
 const TREND_QUERY = gql`
-  query TrendQuery{
-    FindTopInterests{
+  query TrendQuery($year: Int!){
+    FindTopInterests (year : $year){
       interest,
       pub_year,
       num_pubs
@@ -22,15 +23,42 @@ const TREND_QUERY = gql`
 
 
 class Trends extends Component{
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.select = this.select.bind(this);
+    this.state = {
+      dropdownOpen: false,
+      value : 2015
+    };
+  }
+
+  toggle() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    });
+  }
+
+  select(event) {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen,
+      value: event.target.innerText
+    });
+  }
+
   render(){
+    var year = parseInt(this.state.value);
+    console.log(year);
+    console.log(`SELECT * FROM TABLE WHERE year == ${year}`);
     return(
       <Fragment>
-        <Query query={TREND_QUERY}>{
+        <Query query={TREND_QUERY} variables={{year}}>{
           ({loading, error, data}) => {
             if (loading) return <p>Loading...</p>;
             if (error) return `Error! ${error.message}`;
-            const year = 2015;
-            const topInterest = data.FindTopInterests[0].interest;
+            // var year = this.state.value;
+            console.log(data);
             var interest_dict = {};
             var i = 0;
             for (i = 0; i < data.FindTopInterests.length; i++){
@@ -52,13 +80,11 @@ class Trends extends Component{
                           dataPoints: dataPoints}
             }
 
-            console.log(data_);
-
             const options = {
               animationsEnabled: true,
               theme: "light2",
               title:{
-                text: "Popular Publication Topics in 2015"
+                text: `Popular Publication Topics in ${this.state.value}`
               },
               axisY: {
                 title: "Number of Publications",
@@ -74,12 +100,30 @@ class Trends extends Component{
               data: data_
             }
 
-            console.log(options);
             return <div>
               <div className="container">
                 <div className="panel panel-default">
                   <div className="panel-heading">
                     <h3 className="panel-title">Trends</h3>
+                    <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                      <DropdownToggle caret>
+                        Select Year
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem onClick={this.select}>2007</DropdownItem>
+                        <DropdownItem onClick={this.select}>2008</DropdownItem>
+                        <DropdownItem onClick={this.select}>2009</DropdownItem>
+                        <DropdownItem onClick={this.select}>2010</DropdownItem>
+                        <DropdownItem onClick={this.select}>2011</DropdownItem>
+                        <DropdownItem onClick={this.select}>2012</DropdownItem>
+                        <DropdownItem onClick={this.select}>2013</DropdownItem>
+                        <DropdownItem onClick={this.select}>2014</DropdownItem>
+                        <DropdownItem onClick={this.select}>2015</DropdownItem>
+                        <DropdownItem onClick={this.select}>2016</DropdownItem>
+                        <DropdownItem onClick={this.select}>2017</DropdownItem>
+                        <DropdownItem onClick={this.select}>2018</DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
                     <CanvasJSChart options = {options}/>
                   </div>
                 </div>
