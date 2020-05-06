@@ -1,8 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import gql from 'graphql-tag';
-import { graphql} from "react-apollo";
-import * as compose from 'lodash.flowright';
-import debounce from 'debounce';
 import {useLazyQuery} from '@apollo/react-hooks';
 import ArticleItem from "./ArticleItem";
 const searchArticle = gql `

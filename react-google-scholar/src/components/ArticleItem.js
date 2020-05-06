@@ -14,7 +14,7 @@ export default function ArticleItem({Paging:{article_id,
     return <div className="card card-body mb-3">
     <div className="row">
     <div className="col-md-9">
-        <h4>Articles:{' '}
+        <h4>Articles:{''}
         <span className={classNames({
             'text-success':pub_url,
             'text-danger':!pub_url

@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import gql from 'graphql-tag';
 import { Query } from "react-apollo";
 import ArticleItem from "./ArticleItem";
-import Article from './Article';
 import Key from './Key';
 
 // const ARTICLES_QUERY = gql`
@@ -48,6 +47,7 @@ export class Articles extends Component{
         ({loading, error, data}) => {
           if (loading) return <p>Loading...</p>;
           if (error) return `Error! ${error.message}`; 
+          console.log(data.Paging);
           return <Fragment>{
             data.Paging.map(Paging => (
               <ArticleItem key={Paging.article_id} Paging={Paging} />

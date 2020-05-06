@@ -20,6 +20,7 @@ import Articles9 from './Pagination/page9';
 import Articles10 from './Pagination/page10';
 import Articles11 from './Pagination/page11';
 import Search from './components/search';
+import authorPub from './components/authorpub';
 const client = new ApolloClient({
   introspection: true,
   uri: "http://localhost:4000/graphql"
@@ -50,6 +51,9 @@ const App = () => (
       <li class="nav-item active">
         <a class="nav-link" href="/search">Search</a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/authorpub">AuthorPub</a>
+      </li>
     </ul>
     <form class="form-inline my-2 my-lg-0" >
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
@@ -76,6 +80,7 @@ const App = () => (
         <Route exact path="/page10" component={Articles10} />
         <Route exact path="/page11" component={Articles11} />
         <Route exact path="/search" component={Search} />
+        <Route exact path="/authorpub" component={authorPub} />
         
     </div>
     </Router>
