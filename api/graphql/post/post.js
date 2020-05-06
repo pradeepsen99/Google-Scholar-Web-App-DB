@@ -24,6 +24,22 @@ const createPostTable = () => {
 //init table - commented out for now
 createPostTable();
 
+const createArticlesByInterestView = () => {
+    const query = `
+        CREATE VIEW IF NOT EXISTS articles_by_interest
+        AS
+        SELECT DISTINCT article_id, pub_year, interest, citedBy
+        FROM Authored 
+        NATURAL JOIN Article 
+        NATURAL JOIN InterestedIn 
+        WHERE interest != ''`;
+
+    return database.run(query);
+}
+
+createArticlesByInterestView();
+
+
 const createInterestsView = () => {
     const query = `
         CREATE VIEW IF NOT EXISTS interests_pubs_per_year
@@ -241,6 +257,50 @@ var queryType = new graphql.GraphQLObjectType({
                 });
             }
         },
+        FindTopArticles: {
+            type: graphql.GraphQLList(PostType),
+            args:{
+                interest: {
+                    type: new graphql.GraphQLNonNull(graphql.GraphQLString)
+                },
+                year:{
+                    type: new graphql.GraphQLNonNull(graphql.GraphQLInt)
+                }               
+            },
+            resolve: (root, {interest, year}, context, info) => {
+                return new Promise((resolve, reject) => {
+                    database.all("SELECT * \
+                                  FROM Article \
+                                  WHERE article_id IN (SELECT article_id \
+                                                       FROM articles_by_interest \
+                                                       WHERE interest = (?) AND pub_year = (?) \
+                                                       ORDER BY citedBy DESC \
+                                                       LIMIT 5);", [interest, year], function(err, rows) {
+                    // database.all("SELECT * FROM Article LIMIT 5);", function(err, rows) {
+                        if(err){
+                            reject([]);
+                        }
+                        resolve(rows);
+                    });
+                });
+            }
+        },
+        // FindTopArticles: {
+        //     type: graphql.GraphQLList(PostType2),
+        //     resolve: (root, args, context, info) => {
+        //         return new Promise((resolve, reject) => {
+        //             // raw SQLite query to select from table
+        //             database.all("SELECT * \
+        //                           FROM articles_by_interest \
+        //                           LIMIT 5;", function(err, rows) {  
+        //                 if(err){
+        //                     reject([]);
+        //                 }
+        //                 resolve(rows);
+        //             });
+        //         });
+        //     }
+        // },
         /* 
         sqlite> SELECT Author.author_id, Author.author_name, COUNT(article_id) as num_pubs
             FROM Author
