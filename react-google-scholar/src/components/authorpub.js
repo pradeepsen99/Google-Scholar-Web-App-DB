@@ -16,7 +16,7 @@ export class authorPub extends Component{
     render(){
       return(
         <Fragment>
-        <h1 className="display-4 my-3">Authors</h1>
+        <center><h1 className="display-4 my-3">Authors</h1></center>
         <AuthorKey />
         <Query query={AUTHORPUB_QUERY}>
         {

@@ -40,7 +40,7 @@ export class Articles extends Component{
   render(){
     return(
       <Fragment>
-      <h1 className="display-4 my-3">Articles</h1>
+      <center><h1 className="display-4 my-3">Articles</h1></center>
       <Key />
       <Query query={PAGINATION_ARTICLES_QUERY}>
       {

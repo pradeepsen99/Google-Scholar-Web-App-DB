@@ -2,11 +2,9 @@ import React, { Component, Fragment } from 'react';
 import gql from 'graphql-tag';
 import {useLazyQuery} from '@apollo/react-hooks';
 import ArticleItem from "./ArticleItem";
-import SearchJ from './searchJ';
-import SerachP from './searchP';
-const searchArticle = gql `
-    query searchArticle($search_query:String!){
-      searchArticle(search_query:$search_query){
+const searchJournal = gql `
+    query searchJournal($search_query:String!){
+      searchJournal(search_query:$search_query){
         article_id,
         title,
         citedBy,
@@ -20,14 +18,14 @@ const searchArticle = gql `
       }
     }
 `;
-const Search = () => {
-  const [runQuery, {data, loading, error}] = useLazyQuery(searchArticle);
+const SearchJ = () => {
+  const [runQuery, {data, loading, error}] = useLazyQuery(searchJournal);
   if(data){
-    console.log(data.searchArticle);
+    console.log(data.searchJournal);
     return (
       <Fragment>{
-      data.searchArticle.map(searchArticle => (
-        <ArticleItem key={searchArticle.article_id} Paging={searchArticle} />
+      data.searchJournal.map(searchJournal => (
+        <ArticleItem key={searchJournal.article_id} Paging={searchJournal} />
       ))                            
     }
     </Fragment> )
@@ -36,7 +34,7 @@ const Search = () => {
   return (
     <div id="edit-user">
      <div className="field">
-        <label htmlFor="name">Search Title</label>
+        <label htmlFor="name">Search Journal</label>
         <input
           type="text"
           id="search_query"
@@ -51,12 +49,8 @@ const Search = () => {
           }}
           className = "btn btn-success"
           >Search</button>
-          <hr />
-          <SearchJ />
-          <hr />
-          <SerachP />
         </div>
       </div>
   );
 }
-export default Search;
+export default SearchJ;

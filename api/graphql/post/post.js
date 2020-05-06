@@ -230,7 +230,44 @@ var queryType = new graphql.GraphQLObjectType({
                 });
             }
         },
-
+        searchJournal:{
+            type: graphql.GraphQLList(PostType),
+            args:{
+                search_query:{
+                    type: new graphql.GraphQLNonNull(graphql.GraphQLString)
+                }               
+            },
+            resolve: (root, {search_query}, context, info) => {
+                search_query = "%" + search_query + "%";
+                return new Promise((resolve, reject) => {
+                    database.all("SELECT * FROM Article WHERE journal LIKE (?);",[search_query], function(err, rows) {                           
+                        if(err){
+                            reject([]);
+                        }
+                        resolve(rows);
+                    });
+                });
+            }
+        },
+        searchP:{
+            type: graphql.GraphQLList(PostType),
+            args:{
+                search_query:{
+                    type: new graphql.GraphQLNonNull(graphql.GraphQLString)
+                }               
+            },
+            resolve: (root, {search_query}, context, info) => {
+                search_query = "%" + search_query + "%";
+                return new Promise((resolve, reject) => {
+                    database.all("SELECT * FROM Article WHERE pub_publisher LIKE (?);",[search_query], function(err, rows) {                           
+                        if(err){
+                            reject([]);
+                        }
+                        resolve(rows);
+                    });
+                });
+            }
+        },
         // Query top 10 research interests by year
         FindTopInterests: {
             type: graphql.GraphQLList(PostType1),
